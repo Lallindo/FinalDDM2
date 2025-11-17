@@ -4,9 +4,10 @@ using Newtonsoft.Json.Linq;
 
 namespace FinalDDM2.Services;
 
-public class ClimaService(FinalDbContext dbContext) : IClimaService
+public class ClimaService(FinalDbContext dbContext, ILoggedUserService loggedUserService) : IClimaService
 {
     private FinalDbContext _dbContext { get; } = dbContext;
+    private ILoggedUserService _loggedUserService { get; } = loggedUserService; 
     
     public async Task AddClima(Clima clima)
     {
@@ -17,8 +18,8 @@ public class ClimaService(FinalDbContext dbContext) : IClimaService
     {
         Clima climaObj = new Clima()
         {
-            Id = 0,
-            UsuarioId = Convert.ToInt32(await SecureStorage.GetAsync("IdUsuario")),// TODO Mudar para usuário logado
+            Id = 0, 
+            Usuario = await _loggedUserService.GetUsuarioLogado(), 
             TempCelsius = (string)clima["main"]["temp"],
             SensacaoTermCelsius = (string)clima["main"]["feels_like"],
             Cidade = (string)clima["name"],

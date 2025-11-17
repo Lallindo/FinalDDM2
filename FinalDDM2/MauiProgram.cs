@@ -36,6 +36,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IUsuarioService, UsuarioService>();
         builder.Services.AddSingleton<IClimaService, ClimaService>();
         builder.Services.AddSingleton<IApiService, ApiService>();
+        builder.Services.AddSingleton<ILoggedUserService, LoggedUserService>();
         
         // Database
         builder.Services.AddDbContext<FinalDbContext>(options => {

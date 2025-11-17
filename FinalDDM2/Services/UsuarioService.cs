@@ -5,9 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinalDDM2.Services;
 
-public class UsuarioService(FinalDbContext dbContext) : IUsuarioService
+public class UsuarioService(FinalDbContext dbContext, ILoggedUserService loggedUserService) : IUsuarioService
 {
     private FinalDbContext DbContext { get; } = dbContext;
+    private ILoggedUserService _loggedUserService { get; } = loggedUserService;
     
     public async Task RegistrarUsuario(Usuario usuario)
     {
@@ -22,20 +23,17 @@ public class UsuarioService(FinalDbContext dbContext) : IUsuarioService
             .FirstOrDefaultAsync();
 
         if (usuario is null) return;
-        await SecureStorage.SetAsync("IdUsuario", usuario.Id.ToString());
-        await SecureStorage.SetAsync("NomeUsuario", usuario.Nome);
+        await _loggedUserService.SetUsuarioLogado(usuario);
     }
     
     public async Task TentarLogin(Usuario usuario)
     {
         await TentarLogin(usuario.Email, usuario.Senha);
-        Debug.WriteLine(await SecureStorage.GetAsync("NomeUsuario"));
     }
 
     public async Task Deslogar()
     {
-        await SecureStorage.SetAsync("IdUsuario", string.Empty);
-        await SecureStorage.SetAsync("NomeUsuario", string.Empty);
+        await _loggedUserService.UnsetUsuarioLogado();
         
         Debug.WriteLine(await SecureStorage.GetAsync("IdUsuario"));
     }
