@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FinalDDM2.Views.Login">
+    <ContentPage.Content>
+        <VerticalStackLayout>
+            <Label Text="Email:"></Label>
+            <Entry Text="{Binding Usuario.Email}"/>
+            
+            <Label Text="Senha:"></Label>
+            <Entry Text="{Binding Usuario.Senha}" IsPassword="True"/>
+            
+            <Button Text="Fazer Login" Command="{Binding TentarLoginCommand}"></Button>
+        </VerticalStackLayout>
+        
+    </ContentPage.Content>
+</ContentPage>

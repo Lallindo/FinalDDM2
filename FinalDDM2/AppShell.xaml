@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="FinalDDM2.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:FinalDDM2.Views"
+    Shell.FlyoutBehavior="Flyout"
+    Title="FinalDDM2">
+    
+    <ShellContent 
+        Title="Login"
+        ContentTemplate="{DataTemplate local:Login}"
+        Route="Login"/>
+
+    <FlyoutItem Title="Listagem">
+        <ShellContent
+            Title="Listagem"
+            ContentTemplate="{DataTemplate local:Listagem}"
+            Route="Listagem" />
+    </FlyoutItem>
+    
+    <MenuItem 
+        Text="Deslogar"
+        Command="{Binding DeslogarCommand}"/>
+
+</Shell>
