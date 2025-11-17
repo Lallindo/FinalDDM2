@@ -18,11 +18,4 @@ public partial class Listagem : ContentPage
         Task.Run(ViewModel.CarregarDadosUsuario);
         BindingContext = viewModel;
     }
-
-    protected override async void OnAppearing()
-    {
-        base.OnAppearing();
-
-        await ViewModel.CarregarBuscasUsuarioLogado();
-    }
 }

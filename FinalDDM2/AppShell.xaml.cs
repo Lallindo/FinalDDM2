@@ -7,19 +7,12 @@ namespace FinalDDM2;
 
 public partial class AppShell : Shell
 {
-    private IUsuarioService _usuarioService { get; set; }
-    
-    public AppShell(IUsuarioService usuarioService)
+    public AppShell()
     {
-        _usuarioService = usuarioService;
-        _usuarioService.Deslogar();
-        
         InitializeComponent();
         
         Routing.RegisterRoute(nameof(Login), typeof(Login));
         Routing.RegisterRoute(nameof(Registro), typeof(Registro));
         Routing.RegisterRoute(nameof(Listagem), typeof(Listagem));
-        
-        BindingContext = _usuarioService;
     }
 }

@@ -4,20 +4,20 @@ namespace FinalDDM2.Services;
 
 public class LoggedUserService : ILoggedUserService
 {
-    private Usuario? _usuarioLogado { get; set; } = null;
+    private Usuario? UsuarioLogado { get; set; } = null;
 
     public Task<Usuario?> GetUsuarioLogado()
     {
-        return Task.FromResult(_usuarioLogado);
+        return Task.FromResult(UsuarioLogado);
     }
     
     public Task SetUsuarioLogado(Usuario usuario)
     {
-        return Task.Run(() => _usuarioLogado = usuario);
+        return Task.Run(() => UsuarioLogado = usuario);
     }
 
     public Task UnsetUsuarioLogado()
     {
-        return Task.Run(() => _usuarioLogado = null);
+        return Task.Run(() => UsuarioLogado = null);
     }
 }

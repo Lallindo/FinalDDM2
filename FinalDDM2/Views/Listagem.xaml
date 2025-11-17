@@ -10,16 +10,19 @@
             <Entry Text="{Binding CidadeBusca}" Placeholder="Nome da cidade que será buscada" />
             <Button Command="{Binding CallApiCommand}" Text="Chamar API"></Button>
             
-            <CollectionView ItemsSource="{Binding UsuarioLogado.Buscas}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid ColumnDefinitions="*, *, *, *" RowDefinitions="*, *, *">
-                            <Label Grid.Column="0" Grid.Row="0" Text="{Binding Cidade}"></Label>
-                            <Label Grid.Column="0" Grid.Row="1" Text="{Binding TempCelsius}"></Label>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <ScrollView 
+                VerticalOptions="FillAndExpand"> 
+                <CollectionView ItemsSource="{Binding UsuarioLogado.Buscas}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*, *, *, *" RowDefinitions="*, *, *">
+                                <Label Grid.Column="0" Grid.Row="0" Text="{Binding Cidade}"></Label>
+                                <Label Grid.Column="1" Grid.Row="0" Text="{Binding TempCelsius}"></Label>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

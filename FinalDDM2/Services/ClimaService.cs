@@ -6,13 +6,13 @@ namespace FinalDDM2.Services;
 
 public class ClimaService(FinalDbContext dbContext, ILoggedUserService loggedUserService) : IClimaService
 {
-    private FinalDbContext _dbContext { get; } = dbContext;
-    private ILoggedUserService _loggedUserService { get; } = loggedUserService; 
+    private FinalDbContext DbContext { get; } = dbContext;
+    private ILoggedUserService LoggedUserService { get; } = loggedUserService; 
     
     public async Task AddClima(Clima clima)
     {
-        await _dbContext.Climas.AddAsync(clima);
-        await _dbContext.SaveChangesAsync();
+        await DbContext.Climas.AddAsync(clima);
+        await DbContext.SaveChangesAsync();
     }
 
     public async Task AddClima(JObject clima)
@@ -28,7 +28,7 @@ public class ClimaService(FinalDbContext dbContext, ILoggedUserService loggedUse
             return new Clima()
             {
                 Id = 0,
-                Usuario = await _loggedUserService.GetUsuarioLogado(),
+                Usuario = await LoggedUserService.GetUsuarioLogado(),
                 TempCelsius = (double)clima["main"]["temp"],
                 SensacaoTermCelsius = (double)clima["main"]["feels_like"],
                 Cidade = (string)clima["name"],

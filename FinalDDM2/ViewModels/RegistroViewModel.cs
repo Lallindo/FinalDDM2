@@ -8,7 +8,7 @@ namespace FinalDDM2.ViewModels;
 
 public partial class RegistroViewModel(IUsuarioService usuarioService) : ObservableObject
 {
-    private IUsuarioService _usuarioService { get; } = usuarioService;
+    private IUsuarioService UsuarioService { get; } = usuarioService;
 
     [ObservableProperty] private Usuario _usuario = new();
     [ObservableProperty] private UsuarioDataError _usuarioErrors = new();
@@ -21,7 +21,7 @@ public partial class RegistroViewModel(IUsuarioService usuarioService) : Observa
         if (UsuarioErrors.AllIsValid)
         {
             ShowErrorMessage = false;
-            await _usuarioService.RegistrarUsuario(Usuario);
+            await UsuarioService.RegistrarUsuario(Usuario);
         }
         else
         {

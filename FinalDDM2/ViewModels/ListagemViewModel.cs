@@ -13,48 +13,30 @@ public partial class ListagemViewModel(
     IApiService apiService, 
     ILoggedUserService loggedUserService) : ObservableObject
 {
-    private IUsuarioService _usuarioService { get; } = usuarioService;
-    private IClimaService _climaService { get; } = climaService;
-    private IApiService _apiService { get; } = apiService;
-    private ILoggedUserService _loggedUserService { get; } = loggedUserService;
+    private IUsuarioService UsuarioService { get; } = usuarioService;
+    private IClimaService ClimaService { get; } = climaService;
+    private IApiService ApiService { get; } = apiService;
+    private ILoggedUserService LoggedUserService { get; } = loggedUserService;
 
     [ObservableProperty] private Usuario _usuarioLogado = new();
-    public ObservableCollection<Clima> Buscas { get; set; } = [];
     [ObservableProperty] private string _cidadeBusca = string.Empty;
 
     [RelayCommand]
     private async Task CallApi()
     {
-        var climaObj = await _climaService.JsonToClima(await _apiService.GetClimaIn(CidadeBusca));
-        await _climaService.AddClima(climaObj);
-        await CarregarBuscasUsuarioLogado();
+        var climaObj = await ClimaService.JsonToClima(await ApiService.GetClimaIn(CidadeBusca));
+        await ClimaService.AddClima(climaObj);
+        UsuarioLogado.Buscas.Add(climaObj);
     }
 
     [RelayCommand]
     private async Task Deslogar()
     {
-        await _usuarioService.Deslogar();
+        await UsuarioService.Deslogar();
     }
     
     public async Task CarregarDadosUsuario()
     {
-        UsuarioLogado = await _loggedUserService.GetUsuarioLogado();
-    }
-
-    public async Task CarregarBuscasUsuarioLogado()
-    {
-        await RecarregarBuscas(await _usuarioService.ListarClimas(UsuarioLogado));
-    }
-
-    public async Task RecarregarBuscas(List<Clima> climas)
-    {
-        Buscas.Clear();
-        await Task.Run(() =>
-        {
-            foreach (Clima clima in climas)
-            {
-                Buscas.Add(clima);
-            }
-        });
+        UsuarioLogado = await LoggedUserService.GetUsuarioLogado();
     }
 }

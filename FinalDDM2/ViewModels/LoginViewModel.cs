@@ -7,14 +7,14 @@ namespace FinalDDM2.ViewModels;
 
 public partial class LoginViewModel(IUsuarioService usuarioService) : ObservableObject
 {
-    private IUsuarioService _usuarioService { get; } = usuarioService;
+    private IUsuarioService UsuarioService { get; } = usuarioService;
     
     [ObservableProperty] private Usuario _usuario = new();
     
     [RelayCommand]
     private async Task TentarLogin()
     {
-        await _usuarioService.TentarLogin(Usuario);
+        await UsuarioService.TentarLogin(Usuario);
         if (await SecureStorage.GetAsync("IdUsuario") != null)
         {
             await Shell.Current.GoToAsync("Listagem");

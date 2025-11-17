@@ -8,7 +8,7 @@ namespace FinalDDM2.Services;
 public class UsuarioService(FinalDbContext dbContext, ILoggedUserService loggedUserService) : IUsuarioService
 {
     private FinalDbContext DbContext { get; } = dbContext;
-    private ILoggedUserService _loggedUserService { get; } = loggedUserService;
+    private ILoggedUserService LoggedUserService { get; } = loggedUserService;
     
     public async Task RegistrarUsuario(Usuario usuario)
     {
@@ -20,10 +20,11 @@ public class UsuarioService(FinalDbContext dbContext, ILoggedUserService loggedU
     {
         Usuario? usuario = await DbContext.Usuarios
             .Where(u => u.Email == email && u.Senha == senha)
+            .Include(u => u.Buscas)
             .FirstOrDefaultAsync();
 
         if (usuario is null) return;
-        await _loggedUserService.SetUsuarioLogado(usuario);
+        await LoggedUserService.SetUsuarioLogado(usuario);
     }
     
     public async Task TentarLogin(Usuario usuario)
@@ -33,7 +34,7 @@ public class UsuarioService(FinalDbContext dbContext, ILoggedUserService loggedU
 
     public async Task Deslogar()
     {
-        await _loggedUserService.UnsetUsuarioLogado();
+        await LoggedUserService.UnsetUsuarioLogado();
         
         Debug.WriteLine(await SecureStorage.GetAsync("IdUsuario"));
     }
