@@ -31,10 +31,10 @@ public partial class RegistroViewModel(IUsuarioService usuarioService) : Observa
 
     private Task ChecarDadosInseridos()
     {
-        if (Usuario.Nome != string.Empty) UsuarioErrors.NomeIsValid = true;
-        if (Usuario.Senha != string.Empty) UsuarioErrors.SenhaIsValid = true;
-        if (Usuario.Email != string.Empty && Usuario.Email.Contains("@email.com")) UsuarioErrors.EmailIsValid = true;
-        if (Usuario.DataNascimento != new DateTime(1900, 1, 1)) UsuarioErrors.DataNascIsValid = true;
+        if (Usuario.Nome == string.Empty) UsuarioErrors.NomeIsValid = false;
+        if (Usuario.Senha == string.Empty) UsuarioErrors.SenhaIsValid = false;
+        if (Usuario.Email == string.Empty && !Usuario.Email.Contains("@email.com")) UsuarioErrors.EmailIsValid = false;
+        if (Usuario.DataNascimento == new DateTime(1900, 1, 1)) UsuarioErrors.DataNascIsValid = false;
         return Task.CompletedTask;
     }
 }

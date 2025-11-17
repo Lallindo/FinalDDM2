@@ -9,9 +9,20 @@ namespace FinalDDM2.Views;
 
 public partial class Listagem : ContentPage
 {
+    private ListagemViewModel ViewModel { get; set; }
+    
     public Listagem(ListagemViewModel viewModel)
     {
         InitializeComponent();
+        ViewModel = viewModel;
+        Task.Run(ViewModel.CarregarDadosUsuario);
         BindingContext = viewModel;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        await ViewModel.CarregarBuscasUsuarioLogado();
     }
 }

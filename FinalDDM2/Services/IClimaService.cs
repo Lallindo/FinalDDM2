@@ -7,4 +7,5 @@ public interface IClimaService
 {
     Task AddClima(Clima clima);
     Task AddClima(JObject clima);
+    Task<Clima> JsonToClima(JObject clima);
 }

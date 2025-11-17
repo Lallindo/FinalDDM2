@@ -40,13 +40,11 @@ namespace FinalDDM2.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("REAL");
 
-                    b.Property<string>("SensacaoTermCelsius")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<double>("SensacaoTermCelsius")
+                        .HasColumnType("REAL");
 
-                    b.Property<string>("TempCelsius")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<double>("TempCelsius")
+                        .HasColumnType("REAL");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("INTEGER");

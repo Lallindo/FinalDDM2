@@ -12,7 +12,8 @@
                 Placeholder="Seu nome aqui"/>
             <Label 
                 Text="Insira seu nome antes de terminar o cadastro" 
-                TextColor="Red"></Label>
+                TextColor="Red" 
+                IsVisible="{Binding UsuarioErrors.NomeIsValid}"></Label>
             
             <Label 
                 Text="Email:"></Label>
@@ -21,7 +22,8 @@
                 Placeholder="Seu email terminado em '@email.com'"/>
             <Label 
                 Text="Insira um email válido terminado em '@email.com'" 
-                TextColor="Red"></Label>
+                TextColor="Red"
+                IsVisible="{Binding UsuarioErrors.EmailIsValid}"></Label>
             
             <Label 
                 Text="Senha:"></Label>
@@ -30,7 +32,8 @@
                 IsPassword="True"/>
             <Label 
                 Text="Insira uma senha antes de terminar o cadastro" 
-                TextColor="Red"></Label>
+                TextColor="Red"
+                IsVisible="{Binding UsuarioErrors.SenhaIsValid}"></Label>
             
             <Label 
                 Text="Data de nascimento:"></Label>
@@ -38,7 +41,8 @@
                 Date="{Binding Usuario.DataNascimento}"/>
             <Label 
                 Text="Data de nascimento inválida" 
-                TextColor="Red"></Label>
+                TextColor="Red"
+                IsVisible="{Binding UsuarioErrors.DataIsValid}"></Label>
             
             <Button 
                 Text="Cadastrar" 

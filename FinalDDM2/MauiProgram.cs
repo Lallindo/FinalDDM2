@@ -23,9 +23,9 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
         // Views
-        builder.Services.AddSingleton<Login>();
-        builder.Services.AddSingleton<Registro>();
-        builder.Services.AddSingleton<Listagem>();
+        builder.Services.AddTransient<Login>();
+        builder.Services.AddTransient<Registro>();
+        builder.Services.AddTransient<Listagem>();
         
         // ViewModels
         builder.Services.AddTransient<LoginViewModel>();
@@ -33,9 +33,9 @@ public static class MauiProgram
         builder.Services.AddTransient<ListagemViewModel>();
         
         // Services
-        builder.Services.AddSingleton<IUsuarioService, UsuarioService>();
-        builder.Services.AddSingleton<IClimaService, ClimaService>();
-        builder.Services.AddSingleton<IApiService, ApiService>();
+        builder.Services.AddTransient<IUsuarioService, UsuarioService>();
+        builder.Services.AddTransient<IClimaService, ClimaService>();
+        builder.Services.AddTransient<IApiService, ApiService>();
         builder.Services.AddSingleton<ILoggedUserService, LoggedUserService>();
         
         // Database

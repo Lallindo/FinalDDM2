@@ -11,24 +11,32 @@ public class ClimaService(FinalDbContext dbContext, ILoggedUserService loggedUse
     
     public async Task AddClima(Clima clima)
     {
-        _dbContext.Climas.Add(clima);
+        await _dbContext.Climas.AddAsync(clima);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task AddClima(JObject clima)
     {
-        Clima climaObj = new Clima()
+        var climaObj = await JsonToClima(clima);
+        await AddClima(climaObj);
+    }
+
+    public Task<Clima> JsonToClima(JObject clima)
+    {
+        return Task.Run(async () =>
         {
-            Id = 0, 
-            Usuario = await _loggedUserService.GetUsuarioLogado(), 
-            TempCelsius = (string)clima["main"]["temp"],
-            SensacaoTermCelsius = (string)clima["main"]["feels_like"],
-            Cidade = (string)clima["name"],
-            DataBusca = DateTime.Now,
-            Longitude = (double)clima["coord"]["lon"],
-            Latitude = (double)clima["coord"]["lat"],
-            CondMetereologicas = (string)clima["weather"][0]["description"]
-        };
-        await _dbContext.Climas.AddAsync(climaObj);
-        await _dbContext.SaveChangesAsync();
+            return new Clima()
+            {
+                Id = 0,
+                Usuario = await _loggedUserService.GetUsuarioLogado(),
+                TempCelsius = (double)clima["main"]["temp"],
+                SensacaoTermCelsius = (double)clima["main"]["feels_like"],
+                Cidade = (string)clima["name"],
+                DataBusca = DateTime.Now,
+                Longitude = (double)clima["coord"]["lon"],
+                Latitude = (double)clima["coord"]["lat"],
+                CondMetereologicas = (string)clima["weather"][0]["description"]
+            };
+        });
     }
 }

@@ -23,6 +23,11 @@ public class FinalDbContext : DbContext
             entity.HasOne(c => c.Usuario)
                 .WithMany(u => u.Buscas)
                 .IsRequired();
+
+            entity.Ignore(c => c.TempFahrenheit);
+            entity.Ignore(c => c.SensacaoTermFahrenheit);
+            entity.Ignore(c => c.TempKelvin);
+            entity.Ignore(c => c.SensacaoTermKelvin);
         });
     }
 
