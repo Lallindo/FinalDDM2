@@ -4,6 +4,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinalDDM2.Views.Listagem">
     <ContentPage.Content>
-        <Button Command="{Binding CallApiCommand}" Text="Chamar API"></Button>
+        <VerticalStackLayout>
+            <Label Text="{Binding NomeUsuario}"></Label>
+            <Button Command="{Binding CallApiCommand}" Text="Chamar API"></Button>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

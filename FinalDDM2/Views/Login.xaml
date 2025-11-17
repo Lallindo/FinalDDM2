@@ -12,6 +12,7 @@
             <Entry Text="{Binding Usuario.Senha}" IsPassword="True"/>
             
             <Button Text="Fazer Login" Command="{Binding TentarLoginCommand}"></Button>
+            <Button Text="Cadastrar nova conta" Command="{Binding IrParaRegistroCommand}"></Button>
         </VerticalStackLayout>
         
     </ContentPage.Content>

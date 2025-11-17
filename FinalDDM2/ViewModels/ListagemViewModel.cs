@@ -6,10 +6,13 @@ using FinalDDM2.Services;
 
 namespace FinalDDM2.ViewModels;
 
-public partial class ListagemViewModel(IClimaService climaService, IApiService apiService) : ObservableObject
+public partial class ListagemViewModel(IUsuarioService usuarioService, IClimaService climaService, IApiService apiService) : ObservableObject
 {
+    private IUsuarioService _usuarioService { get; } = usuarioService;
     private IClimaService _climaService { get; } = climaService;
     private IApiService _apiService { get; } = apiService;
+    
+    [ObservableProperty] private string _nomeUsuario = SecureStorage.GetAsync("NomeUsuario").Result;
 
     [RelayCommand]
     private async Task CallApi()
@@ -17,4 +20,9 @@ public partial class ListagemViewModel(IClimaService climaService, IApiService a
         await _climaService.AddClima(await _apiService.GetClimaIn("Jau"));
     }
 
+    [RelayCommand]
+    private async Task Deslogar()
+    {
+        await _usuarioService.Deslogar();
+    }
 }

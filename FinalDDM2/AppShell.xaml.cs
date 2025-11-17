@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FinalDDM2.Services;
 using FinalDDM2.Views;
 
@@ -20,11 +21,5 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(Listagem), typeof(Listagem));
         
         BindingContext = _usuarioService;
-    }
-
-    [RelayCommand]
-    private async Task Deslogar()
-    {
-        await _usuarioService.Deslogar();
     }
 }

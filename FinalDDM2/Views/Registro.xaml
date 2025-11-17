@@ -4,6 +4,49 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FinalDDM2.Views.Registro">
     <ContentPage.Content>
-        
+        <VerticalStackLayout>
+            <Label 
+                Text="Nome:"></Label>
+            <Entry 
+                Text="{Binding Usuario.Nome}" 
+                Placeholder="Seu nome aqui"/>
+            <Label 
+                Text="Insira seu nome antes de terminar o cadastro" 
+                TextColor="Red"></Label>
+            
+            <Label 
+                Text="Email:"></Label>
+            <Entry 
+                Text="{Binding Usuario.Email}" 
+                Placeholder="Seu email terminado em '@email.com'"/>
+            <Label 
+                Text="Insira um email válido terminado em '@email.com'" 
+                TextColor="Red"></Label>
+            
+            <Label 
+                Text="Senha:"></Label>
+            <Entry 
+                Text="{Binding Usuario.Senha}" 
+                IsPassword="True"/>
+            <Label 
+                Text="Insira uma senha antes de terminar o cadastro" 
+                TextColor="Red"></Label>
+            
+            <Label 
+                Text="Data de nascimento:"></Label>
+            <DatePicker 
+                Date="{Binding Usuario.DataNascimento}"/>
+            <Label 
+                Text="Data de nascimento inválida" 
+                TextColor="Red"></Label>
+            
+            <Button 
+                Text="Cadastrar" 
+                Command="{Binding FazerCadastroCommand}"/>
+            
+            <Label 
+                Text="Verifique se os dados foram inseridos corretamente" 
+                IsVisible="{Binding ShowErrorMessage}"></Label>
+        </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

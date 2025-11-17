@@ -21,6 +21,6 @@
     
     <MenuItem 
         Text="Deslogar"
-        Command="{Binding DeslogarCommand}"/>
+        Command="{Binding }"/>
 
 </Shell>
