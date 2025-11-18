@@ -8,49 +8,54 @@
             <Label 
                 Text="Nome:"></Label>
             <Entry 
-                Text="{Binding Usuario.Nome}" 
+                x:Name="InpNome"
+                Text="{Binding Nome}" 
                 Placeholder="Seu nome aqui"/>
             <Label 
-                Text="Insira seu nome antes de terminar o cadastro" 
+                Text="{Binding GetErrors[Nome][0].ErrorMessage}" 
                 TextColor="Red" 
-                IsVisible="{Binding UsuarioErrors.NomeIsValid}"></Label>
+                IsVisible="{Binding HasErrors}"></Label>
             
             <Label 
                 Text="Email:"></Label>
             <Entry 
-                Text="{Binding Usuario.Email}" 
+                x:Name="InpEmail"
+                Text="{Binding Email}" 
                 Placeholder="Seu email terminado em '@email.com'"/>
             <Label 
-                Text="Insira um email válido terminado em '@email.com'" 
+                Text="{Binding GetErrors[Email][0].ErrorMessage}" 
                 TextColor="Red"
-                IsVisible="{Binding UsuarioErrors.EmailIsValid}"></Label>
+                IsVisible="{Binding HasErrors}"></Label>
             
             <Label 
                 Text="Senha:"></Label>
             <Entry 
-                Text="{Binding Usuario.Senha}" 
+                x:Name="InpSenha"
+                Text="{Binding Senha}" 
                 IsPassword="True"/>
             <Label 
-                Text="Insira uma senha antes de terminar o cadastro" 
+                Text="{Binding GetErrors[Senha][0].ErrorMessage}" 
                 TextColor="Red"
                 IsVisible="{Binding UsuarioErrors.SenhaIsValid}"></Label>
             
             <Label 
                 Text="Data de nascimento:"></Label>
             <DatePicker 
-                Date="{Binding Usuario.DataNascimento}"/>
+                x:Name="InpDataNasc"
+                Date="{Binding DataNascimento}"/>
             <Label 
-                Text="Data de nascimento inválida" 
+                Text="{Binding GetErrors[DataNascimento][0].ErrorMessage}" 
                 TextColor="Red"
-                IsVisible="{Binding UsuarioErrors.DataIsValid}"></Label>
+                IsVisible="{Binding HasErrors}"></Label>
             
             <Button 
                 Text="Cadastrar" 
-                Command="{Binding FazerCadastroCommand}"/>
+                Command="{Binding FazerCadastroCommand}"
+                IsEnabled="{Binding HasErrors, Converter={StaticResource InvertedBoolConverter}}"/>
             
             <Label 
                 Text="Verifique se os dados foram inseridos corretamente" 
-                IsVisible="{Binding ShowErrorMessage}"></Label>
+                IsVisible="{Binding HasErrors}"></Label>
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

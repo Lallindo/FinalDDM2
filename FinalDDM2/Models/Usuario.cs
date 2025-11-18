@@ -9,5 +9,5 @@ public class Usuario
     public string Nome { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Senha { get; set; } = string.Empty;
-    public DateTime DataNascimento { get; set; } = new DateTime(1900, 1, 1);
+    public DateTime DataNascimento { get; set; } = new DateTime(1930, 1, 1);
 }
