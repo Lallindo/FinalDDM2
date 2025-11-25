@@ -2,27 +2,39 @@
 
 namespace FinalDDM2.Views.Components;
 
-public partial class ConfigModal : Popup
+public partial class ConfigModal : Popup<int>
 {
-    public ConfigModal()
+    private int IdTempOpcao { get; set; }
+    
+    public ConfigModal(int idTempOpcao)
     {
+        IdTempOpcao = idTempOpcao;
         InitializeComponent();
+
+        switch (idTempOpcao)
+        {
+            case 1:
+                FahrenRb.IsChecked = true;
+                break;
+
+            case 2:
+                KelvinRb.IsChecked = true;
+                break;
+            
+            default:
+                CelsiusRb.IsChecked = true;
+                break;
+        }
     }
     
     private async void Button_Clicked(object sender, EventArgs e)
     {
-        // Força o fechamento a rodar no próximo "frame" da UI
-        await Dispatcher.DispatchAsync(async () =>
-        {
-            try 
-            {
-                await this.CloseAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erro ao fechar: {ex.Message}");
-                // Se cair aqui, o erro foi engolido e o app não fecha
-            }
-        });
+        await CloseAsync(IdTempOpcao);
+    }
+    
+    private void OnColorsRadioButtonCheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        var radioButton = (RadioButton)sender;
+        IdTempOpcao = (int)radioButton.Value;
     }
 }

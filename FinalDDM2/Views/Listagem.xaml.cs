@@ -15,23 +15,15 @@ public partial class Listagem : ContentPage
     {
         InitializeComponent();
         ViewModel = viewModel;
-        Task.Run(ViewModel.CarregarDadosUsuario);
-        Task.Run(ViewModel.GetIdOpcao);
         BindingContext = viewModel;
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-
-        if (!Task.Run(ViewModel.ExisteUsuarioLogado).Result)
-        {
-            DisplayActionSheet(
-                "Erro ao abrir a página de listagem", 
-                null,
-                null, 
-                null, 
-                "Login");
-        };
+        
+        Task.Run(ViewModel.CarregarDadosUsuario);
+        Task.Run(ViewModel.GetIdOpcao);
+        Task.Run(ViewModel.ChecarUsuarioLogado);
     }
 }

@@ -61,7 +61,8 @@ public partial class RegistroViewModel(IUsuarioService usuarioService) : Observa
 
         if (!HasErrors)
         {
-            await UsuarioService.RegistrarUsuario(Usuario);   
+            await UsuarioService.RegistrarUsuario(Usuario);
+            await Shell.Current.GoToAsync("///Login");
         }
         else
         {

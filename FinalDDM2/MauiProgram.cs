@@ -42,6 +42,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ILoggedUserService, LoggedUserService>();
         builder.Services.AddSingleton<IOpcoesService, OpcoesService>();
         builder.Services.AddTransient<IPopupService, PopupService>();
+        builder.Services.AddSingleton<IDialogService, DialogService>();
         
         // Database
         builder.Services.AddDbContext<FinalDbContext>(options => {

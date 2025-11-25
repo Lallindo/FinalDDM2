@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Maui;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FinalDDM2.Models;
 using FinalDDM2.Services;
@@ -16,7 +15,8 @@ public partial class ListagemViewModel(
     IApiService apiService, 
     ILoggedUserService loggedUserService,
     IOpcoesService opcoesService,
-    IPopupService popupService) : ObservableObject
+    IPopupService popupService,
+    IDialogService dialogService) : ObservableObject
 {
     private IUsuarioService UsuarioService { get; } = usuarioService;
     private IClimaService ClimaService { get; } = climaService;
@@ -24,9 +24,10 @@ public partial class ListagemViewModel(
     private ILoggedUserService LoggedUserService { get; } = loggedUserService;
     private IOpcoesService OpcoesService { get; } = opcoesService;
     private IPopupService PopupService { get; } = popupService;
+    private IDialogService DialogService { get; } = dialogService;
 
     [ObservableProperty] private int _idOpcoesTemp = 0;
-    [ObservableProperty] private Usuario _usuarioLogado = new();
+    [ObservableProperty] private Usuario? _usuarioLogado = new();
     [ObservableProperty] private string _cidadeBusca = string.Empty;
     
     [RelayCommand]
@@ -59,8 +60,15 @@ public partial class ListagemViewModel(
         UsuarioLogado = await LoggedUserService.GetUsuarioLogado();
     }
 
-    public async Task<bool> ExisteUsuarioLogado()
+    public async Task ChecarUsuarioLogado()
     {
-        return await loggedUserService.GetUsuarioLogado() != null;
+        if (UsuarioLogado == null)
+        {
+            var task = DialogService.DisplayAlert("Erro", "Bla", "blala");
+            if (task.IsCompleted)
+            {
+                await Shell.Current.GoToAsync("///Login");   
+            }
+        }
     }
 }

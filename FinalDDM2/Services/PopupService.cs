@@ -12,7 +12,7 @@ public class PopupService : IPopupService
 
         if (mainPage != null)
         {
-            var popup = new ConfigModal();
+            var popup = new ConfigModal(idTempOpcao);
             await mainPage.ShowPopupAsync(popup);
         }
     }

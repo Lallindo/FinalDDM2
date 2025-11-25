@@ -7,7 +7,6 @@
     Title="FinalDDM2">
 
     <TabBar>
-        
         <ShellContent 
             Title="Login"
             ContentTemplate="{DataTemplate local:Login}"

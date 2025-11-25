@@ -24,6 +24,6 @@ public partial class LoginViewModel(IUsuarioService usuarioService) : Observable
     [RelayCommand]
     private async Task IrParaRegistro()
     {
-        await Shell.Current.GoToAsync("///Registro");
+        await Shell.Current.GoToAsync("Registro");
     }
 }
