@@ -1,9 +1,11 @@
-﻿using FinalDDM2.Database;
+﻿using CommunityToolkit.Maui;
+using FinalDDM2.Database;
 using FinalDDM2.Services;
 using FinalDDM2.ViewModels;
 using FinalDDM2.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using IPopupService = FinalDDM2.Services.IPopupService;
 
 namespace FinalDDM2;
 
@@ -14,6 +16,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts => {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
@@ -37,6 +40,8 @@ public static class MauiProgram
         builder.Services.AddTransient<IClimaService, ClimaService>();
         builder.Services.AddTransient<IApiService, ApiService>();
         builder.Services.AddSingleton<ILoggedUserService, LoggedUserService>();
+        builder.Services.AddSingleton<IOpcoesService, OpcoesService>();
+        builder.Services.AddTransient<IPopupService, PopupService>();
         
         // Database
         builder.Services.AddDbContext<FinalDbContext>(options => {

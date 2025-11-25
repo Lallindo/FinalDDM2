@@ -6,13 +6,16 @@
     xmlns:local="clr-namespace:FinalDDM2.Views"
     Title="FinalDDM2">
 
-    <ShellContent 
-        Title="Login"
-        ContentTemplate="{DataTemplate local:Login}"
-        Route="Login"/>
-    <ShellContent
-        Title="Listagem"
-        ContentTemplate="{DataTemplate local:Listagem}"
-        Route="Listagem" />
+    <TabBar>
+        
+        <ShellContent 
+            Title="Login"
+            ContentTemplate="{DataTemplate local:Login}"
+            Route="Login"/>
+        <ShellContent
+            Title="Listagem"
+            ContentTemplate="{DataTemplate local:Listagem}" 
+            Route="Listagem"/>
+    </TabBar>
 
 </Shell>

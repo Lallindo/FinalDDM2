@@ -17,13 +17,13 @@ public partial class LoginViewModel(IUsuarioService usuarioService) : Observable
         await UsuarioService.TentarLogin(Usuario);
         if (await SecureStorage.GetAsync("IdUsuario") != null)
         {
-            await Shell.Current.GoToAsync("Listagem");
+            await Shell.Current.GoToAsync("///Listagem");
         }
     }
 
     [RelayCommand]
     private async Task IrParaRegistro()
     {
-        await Shell.Current.GoToAsync("Registro");
+        await Shell.Current.GoToAsync("///Registro");
     }
 }
