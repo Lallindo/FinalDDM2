@@ -63,7 +63,7 @@ public partial class ClimaCard : ContentView
                 LblSensacao.Text = $"Sensação: {ClimaData.SensacaoTermKelvin:F1}K";
                 break;
 
-            default: // Celsius (0)
+            default: // Celsius
                 LblTemperatura.Text = $"{ClimaData.TempCelsius:F1}°C";
                 LblSensacao.Text = $"Sensação: {ClimaData.SensacaoTermCelsius:F1}°C";
                 break;

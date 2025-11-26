@@ -2,5 +2,5 @@
 
 public interface IPopupService
 {
-    Task AbrirConfiguracoesModal(int idTempOpcao);
+    Task<object?> AbrirConfiguracoesModal(int idTempOpcao);
 }

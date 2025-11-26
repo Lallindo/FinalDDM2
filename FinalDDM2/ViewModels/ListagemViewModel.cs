@@ -2,73 +2,135 @@
 using CommunityToolkit.Mvvm.Input;
 using FinalDDM2.Models;
 using FinalDDM2.Services;
-using FinalDDM2.Views.Components;
-using Microsoft.Maui.Controls.Shapes;
-using IPopupService = FinalDDM2.Services.IPopupService;
-
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace FinalDDM2.ViewModels;
 
 public partial class ListagemViewModel(
-    IUsuarioService usuarioService, 
-    IClimaService climaService, 
-    IApiService apiService, 
+    IUsuarioService usuarioService,
+    IClimaService climaService,
+    IApiService apiService,
     ILoggedUserService loggedUserService,
     IOpcoesService opcoesService,
     IPopupService popupService,
     IDialogService dialogService) : ObservableObject
 {
-    private IUsuarioService UsuarioService { get; } = usuarioService;
-    private IClimaService ClimaService { get; } = climaService;
-    private IApiService ApiService { get; } = apiService;
-    private ILoggedUserService LoggedUserService { get; } = loggedUserService;
-    private IOpcoesService OpcoesService { get; } = opcoesService;
-    private IPopupService PopupService { get; } = popupService;
-    private IDialogService DialogService { get; } = dialogService;
+    private readonly IUsuarioService _usuarioService = usuarioService;
+    private readonly IClimaService _climaService = climaService;
+    private readonly IApiService _apiService = apiService;
+    private readonly ILoggedUserService _loggedUserService = loggedUserService;
+    private readonly IOpcoesService _opcoesService = opcoesService;
+    private readonly IPopupService _popupService = popupService;
+    private readonly IDialogService _dialogService = dialogService;
 
-    [ObservableProperty] private int _idOpcoesTemp = 0;
-    [ObservableProperty] private Usuario? _usuarioLogado = new();
-    [ObservableProperty] private string _cidadeBusca = string.Empty;
+    private List<Clima> _todasAsBuscas = new();
+
+    [ObservableProperty] private int _idOpcoesTemp;
+    [ObservableProperty] private Usuario? _usuarioLogado;
     
-    [RelayCommand]
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CallApiCommand))]
+    private string _cidadeBusca = string.Empty;
+
+    [ObservableProperty] private ObservableCollection<Clima> _buscas = new();
+    [ObservableProperty] private DateTime? _startDate;
+    [ObservableProperty] private DateTime? _endDate;
+    
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ToggleFiltrosButtonText))]
+    private bool _filtrosVisiveis = false;
+
+    public string ToggleFiltrosButtonText => FiltrosVisiveis ? "Esconder Filtros" : "Mostrar Filtros";
+
+    private bool CanCallApi() => !string.IsNullOrWhiteSpace(CidadeBusca);
+
+    [RelayCommand(CanExecute = nameof(CanCallApi))]
     private async Task CallApi()
     {
-        var climaObj = await ClimaService.JsonToClima(await ApiService.GetClimaIn(CidadeBusca));
-        await ClimaService.AddClima(climaObj);
+        var climaObj = await _climaService.JsonToClima(await _apiService.GetClimaIn(CidadeBusca));
+        await _climaService.AddClima(climaObj);
+        await CarregarDadosUsuario(); // Refresh data
     }
 
     [RelayCommand]
     private async Task AbrirConfiguracoes()
     {
-        await PopupService.AbrirConfiguracoesModal(IdOpcoesTemp);
+        var resultado = await _popupService.AbrirConfiguracoesModal(IdOpcoesTemp);
+        if (resultado is int novoId)
+        {
+            _opcoesService.SetOpcoesTemp(novoId);
+            IdOpcoesTemp = novoId;
+        }
     }
 
     [RelayCommand]
     private async Task Deslogar()
     {
-        await UsuarioService.Deslogar();
+        await _usuarioService.Deslogar();
+        await Shell.Current.GoToAsync("///Login");
     }
 
-    public Task GetIdOpcao()
+    [RelayCommand]
+    private void ToggleFiltros()
     {
-        IdOpcoesTemp = OpcoesService.GetOpcoesTemp();
-        return Task.CompletedTask;
+        FiltrosVisiveis = !FiltrosVisiveis;
     }
-    
+
+    [RelayCommand]
+    private void Filtrar()
+    {
+        var buscasFiltradas = _todasAsBuscas;
+
+        if (StartDate.HasValue)
+        {
+            buscasFiltradas = buscasFiltradas.Where(b => b.DataBusca.Date >= StartDate.Value.Date).ToList();
+        }
+
+        if (EndDate.HasValue)
+        {
+            buscasFiltradas = buscasFiltradas.Where(b => b.DataBusca.Date <= EndDate.Value.Date).ToList();
+        }
+
+        Buscas = new ObservableCollection<Clima>(buscasFiltradas);
+    }
+
+    [RelayCommand]
+    private void ClearStartDate()
+    {
+        StartDate = null;
+        Filtrar();
+    }
+
+    [RelayCommand]
+    private void ClearEndDate()
+    {
+        EndDate = null;
+        Filtrar();
+    }
+
+    public void GetIdOpcao()
+    {
+        IdOpcoesTemp = _opcoesService.GetOpcoesTemp();
+    }
+
     public async Task CarregarDadosUsuario()
     {
-        UsuarioLogado = await LoggedUserService.GetUsuarioLogado();
+        UsuarioLogado = await _loggedUserService.GetUsuarioLogado();
+        if (UsuarioLogado?.Buscas != null)
+        {
+            _todasAsBuscas = UsuarioLogado.Buscas.OrderByDescending(b => b.DataBusca).ToList();
+            Buscas = new ObservableCollection<Clima>(_todasAsBuscas);
+        }
     }
 
     public async Task ChecarUsuarioLogado()
     {
         if (UsuarioLogado == null)
         {
-            var task = DialogService.DisplayAlert("Erro", "Bla", "blala");
-            if (task.IsCompleted)
-            {
-                await Shell.Current.GoToAsync("///Login");   
-            }
+            await _dialogService.DisplayAlert("Erro", "Usuário não encontrado. Por favor, faça o login novamente.", "OK");
+            await Shell.Current.GoToAsync("///Login");
         }
     }
 }

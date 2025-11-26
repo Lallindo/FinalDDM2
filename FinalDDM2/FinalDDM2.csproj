@@ -21,6 +21,9 @@
         <Nullable>enable</Nullable>
         <AcceptAndroidSDKLicenses>true</AcceptAndroidSDKLicenses>
 
+        <JavaSdkDirectory>C:\JDK\jdk-21.0.1-hotspot</JavaSdkDirectory>
+        <AndroidSdkDirectory>C:\AndroidSDK</AndroidSdkDirectory>
+
         <!-- Display name -->
         <ApplicationTitle>FinalDDM2</ApplicationTitle>
 

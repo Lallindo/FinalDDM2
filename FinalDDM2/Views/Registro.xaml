@@ -1,68 +1,85 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="FinalDDM2.Views.Registro">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
-    
-    <ContentPage.Content>
-        <VerticalStackLayout>
+             xmlns:viewModels="clr-namespace:FinalDDM2.ViewModels"
+             x:Class="FinalDDM2.Views.Registro"
+             x:DataType="viewModels:RegistroViewModel"
+             Title="Crie sua Conta">
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="20">
+
             <Label 
-                Text="Nome:"></Label>
-            <Entry 
-                x:Name="InpNome"
-                Text="{Binding Nome}" 
-                Placeholder="Seu nome aqui"/>
-            <Label 
-                Text="{Binding ErrosNome[0]}" 
-                TextColor="Red" 
-                IsVisible="{Binding HasErrors}"></Label>
-            
-            <Label 
-                Text="Email:"></Label>
-            <Entry 
-                x:Name="InpEmail"
-                Text="{Binding Email}" 
-                Placeholder="Seu email terminado em '@email.com'"/>
-            <Label 
-                Text="{Binding ErrosEmail[0]}" 
-                TextColor="Red"
-                IsVisible="{Binding HasErrors}"></Label>
-            
-            <Label 
-                Text="Senha:"></Label>
-            <Entry 
-                x:Name="InpSenha"
-                Text="{Binding Senha}" 
-                IsPassword="True"/>
-            <Label 
-                Text="{Binding ErrosSenha[0]}" 
-                TextColor="Red"
-                IsVisible="{Binding UsuarioErrors.SenhaIsValid}"></Label>
-            
-            <Label 
-                Text="Data de nascimento:"></Label>
-            <DatePicker 
-                x:Name="InpDataNasc"
-                Date="{Binding DataNascimento}"/>
-            <Label 
-                Text="{Binding ErrosDataNascimento[0]}" 
-                TextColor="Red"
-                IsVisible="{Binding HasErrors}"></Label>
-            
+                Text="Registro de Novo Usuário"
+                FontSize="24"
+                FontAttributes="Bold"
+                HorizontalOptions="Center" />
+
+            <!-- Nome Input -->
+            <Border Padding="10" Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 10,10,10,10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Nome Completo" />
+                    <Entry Text="{Binding Nome, Mode=TwoWay}" Placeholder="Digite seu nome" />
+                    <CollectionView ItemsSource="{Binding ErrosNome}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding .}" TextColor="Red" FontSize="12" />
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Email Input -->
+            <Border Padding="10" Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 10,10,10,10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Email" />
+                    <Entry Text="{Binding Email, Mode=TwoWay}" Placeholder="exemplo@email.com" Keyboard="Email" />
+                    <CollectionView ItemsSource="{Binding ErrosEmail}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding .}" TextColor="Red" FontSize="12" />
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Senha Input -->
+            <Border Padding="10" Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 10,10,10,10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Senha" />
+                    <Entry Text="{Binding Senha, Mode=TwoWay}" IsPassword="True" Placeholder="Mínimo de 5 caracteres" />
+                    <CollectionView ItemsSource="{Binding ErrosSenha}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding .}" TextColor="Red" FontSize="12" />
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Data de Nascimento Input -->
+            <Border Padding="10" Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 10,10,10,10">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Data de Nascimento" />
+                    <DatePicker Date="{Binding DataNascimento, Mode=TwoWay}" />
+                    <CollectionView ItemsSource="{Binding ErrosDataNascimento}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding .}" TextColor="Red" FontSize="12" />
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
             <Button 
                 Text="Cadastrar" 
                 Command="{Binding FazerCadastroCommand}"
-                IsEnabled="{Binding HasErrors, Converter={StaticResource InvertedBoolConverter}}"/>
-            
-            <Label 
-                Text="Verifique se os dados foram inseridos corretamente" 
-                IsVisible="{Binding HasErrors}"></Label>
+                HorizontalOptions="FillAndExpand"
+                Margin="0,20,0,0" />
+
         </VerticalStackLayout>
-    </ContentPage.Content>
+    </ScrollView>
 </ContentPage>

@@ -5,19 +5,24 @@ using FinalDDM2.Services;
 
 namespace FinalDDM2.ViewModels;
 
-public partial class LoginViewModel(IUsuarioService usuarioService) : ObservableObject
+public partial class LoginViewModel(IUsuarioService usuarioService, IDialogService dialogService) : ObservableObject
 {
-    private IUsuarioService UsuarioService { get; } = usuarioService;
+    private readonly IUsuarioService _usuarioService = usuarioService;
+    private readonly IDialogService _dialogService = dialogService;
     
     [ObservableProperty] private Usuario _usuario = new();
     
     [RelayCommand]
     private async Task TentarLogin()
     {
-        await UsuarioService.TentarLogin(Usuario);
+        await _usuarioService.TentarLogin(Usuario);
         if (await SecureStorage.GetAsync("IdUsuario") != null)
         {
             await Shell.Current.GoToAsync("///Listagem");
+        }
+        else
+        {
+            await _dialogService.DisplayAlert("Erro", "Email ou senha incorretos.", "OK");
         }
     }
 

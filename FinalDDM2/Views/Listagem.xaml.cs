@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FinalDDM2.ViewModels;
+﻿using FinalDDM2.ViewModels;
 
 namespace FinalDDM2.Views;
 
 public partial class Listagem : ContentPage
 {
-    private ListagemViewModel ViewModel { get; set; }
-    
+    private readonly ListagemViewModel _viewModel;
+
     public Listagem(ListagemViewModel viewModel)
     {
         InitializeComponent();
-        ViewModel = viewModel;
-        BindingContext = viewModel;
+        _viewModel = viewModel;
+        BindingContext = _viewModel;
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
         
-        Task.Run(ViewModel.CarregarDadosUsuario);
-        Task.Run(ViewModel.GetIdOpcao);
-        Task.Run(ViewModel.ChecarUsuarioLogado);
+        await _viewModel.CarregarDadosUsuario();
+        _viewModel.GetIdOpcao();
+        await _viewModel.ChecarUsuarioLogado();
     }
 }

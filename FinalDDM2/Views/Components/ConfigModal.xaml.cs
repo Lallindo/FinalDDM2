@@ -1,10 +1,11 @@
-﻿using CommunityToolkit.Maui.Views; 
+﻿using CommunityToolkit.Maui.Views;
+using System;
 
 namespace FinalDDM2.Views.Components;
 
 public partial class ConfigModal : Popup<int>
 {
-    private int IdTempOpcao { get; set; }
+    public int IdTempOpcao { get; private set; }
     
     public ConfigModal(int idTempOpcao)
     {
@@ -34,7 +35,9 @@ public partial class ConfigModal : Popup<int>
     
     private void OnColorsRadioButtonCheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        var radioButton = (RadioButton)sender;
-        IdTempOpcao = (int)radioButton.Value;
+        if (e.Value && sender is RadioButton radioButton)
+        {
+            IdTempOpcao = Convert.ToInt32(radioButton.Value);
+        }
     }
 }

@@ -1,39 +1,75 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:views="clr-namespace:FinalDDM2.Views"
+             xmlns:viewModels="clr-namespace:FinalDDM2.ViewModels"
+             xmlns:models="clr-namespace:FinalDDM2.Models"
              xmlns:components="clr-namespace:FinalDDM2.Views.Components"
-             x:Class="FinalDDM2.Views.Listagem">
+             x:Class="FinalDDM2.Views.Listagem"
+             x:DataType="viewModels:ListagemViewModel">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Configurações" 
+        <ToolbarItem Text="Configurações"
                      Order="Primary"
                      Priority="0"
                      Command="{Binding AbrirConfiguracoesCommand}" />
+        <ToolbarItem Text="Logout"
+                     Order="Primary"
+                     Priority="1"
+                     Command="{Binding DeslogarCommand}" />
     </ContentPage.ToolbarItems>
-    
-    <ContentPage.Content>
-        
-        <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, *" Padding="10">
-            
-            <Label Grid.Row="0" Text="{Binding UsuarioLogado.Nome}" FontAttributes="Bold" FontSize="18" Margin="0,0,0,10"/>
-            
-            <Label Grid.Row="1" Text="Cidade que será buscada:"></Label>
-            
-            <Entry Grid.Row="2" Text="{Binding CidadeBusca}" Placeholder="Nome da cidade que será buscada" />
-            
-            <Button Grid.Row="3" Command="{Binding CallApiCommand}" Text="Chamar API" Margin="0,10,0,10"></Button>
-            
-            <Label Grid.Row="4" Text="Histórico de buscas" FontAttributes="Bold" Margin="0,0,0,5"/> 
 
-            <CollectionView Grid.Row="5" ItemsSource="{Binding UsuarioLogado.Buscas}">
+    <ContentPage.Content>
+
+        <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, *" Padding="10">
+
+            <Label Grid.Row="0" Text="{Binding UsuarioLogado.Nome}" FontAttributes="Bold" FontSize="18" Margin="0,0,0,10"/>
+
+            <Label Grid.Row="1" Text="Cidade que será buscada:"></Label>
+
+            <Entry Grid.Row="2" Text="{Binding CidadeBusca}" Placeholder="Nome da cidade que será buscada" />
+
+            <Button Grid.Row="3" Command="{Binding CallApiCommand}" Text="Chamar API" Margin="0,10,0,10"></Button>
+
+            <Button Grid.Row="4" Command="{Binding ToggleFiltrosCommand}" Text="{Binding ToggleFiltrosButtonText}" Margin="0,0,0,10" />
+
+            <VerticalStackLayout Grid.Row="5" IsVisible="{Binding FiltrosVisiveis}" Spacing="10">
+
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="De:" VerticalOptions="Center" />
+                    <DatePicker Date="{Binding StartDate}" Format="dd/MM/yyyy" HorizontalOptions="FillAndExpand" />
+                    <Button Text="Limpar" Command="{Binding ClearStartDateCommand}" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Até:" VerticalOptions="Center" />
+                    <DatePicker Date="{Binding EndDate}" Format="dd/MM/yyyy" HorizontalOptions="FillAndExpand" />
+                    <Button Text="Limpar" Command="{Binding ClearEndDateCommand}" />
+                </HorizontalStackLayout>
+                
+                <Button Command="{Binding FiltrarCommand}" Text="Filtrar Histórico" Margin="0,10,0,0" />
+            </VerticalStackLayout>
+
+            <CollectionView Grid.Row="6" ItemsSource="{Binding Buscas}">
+
+                <CollectionView.Header>
+                    <Label Text="Histórico de buscas" FontAttributes="Bold" Margin="0,0,0,5"/>
+                </CollectionView.Header>
+                
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <components:ClimaCard 
+                    <DataTemplate x:DataType="models:Clima">
+                        <components:ClimaCard
                             ClimaData="{Binding .}"
-                            UnidadeId="{Binding BindingContext.IdOpcaoAtual, Source={RelativeSource AncestorType={x:Type views:Listagem}}}" />
+                            UnidadeId="{Binding BindingContext.IdOpcoesTemp, Source={x:Reference this}}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <Label Text="Nenhuma busca recente."
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           TextColor="Gray"/>
+                </CollectionView.EmptyView>
             </CollectionView>
+
         </Grid>
     </ContentPage.Content>
 </ContentPage>

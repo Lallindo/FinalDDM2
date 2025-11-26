@@ -20,7 +20,8 @@ public class UsuarioService(FinalDbContext dbContext, ILoggedUserService loggedU
     {
         Usuario? usuario = await DbContext.Usuarios
             .Where(u => u.Email == email && u.Senha == senha)
-            .Include(u => u.Buscas)
+            .Include(u => u.Buscas
+                .OrderByDescending(b => b.DataBusca))
             .FirstOrDefaultAsync();
 
         if (usuario is null) return;
