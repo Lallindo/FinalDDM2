@@ -15,10 +15,17 @@ public partial class Listagem : ContentPage
 
     protected override async void OnAppearing()
     {
-        base.OnAppearing();
-        
-        await _viewModel.CarregarDadosUsuario();
-        _viewModel.GetIdOpcao();
-        await _viewModel.ChecarUsuarioLogado();
+        try
+        {
+            base.OnAppearing();
+
+            await _viewModel.CarregarDadosUsuario();
+            _viewModel.GetIdOpcao();
+            await _viewModel.ChecarUsuarioLogado();
+        }
+        catch (Exception e)
+        {
+            throw; // TODO handle exception
+        }
     }
 }

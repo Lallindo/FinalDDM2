@@ -1,10 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FinalDDM2.Models;
 using FinalDDM2.Services;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace FinalDDM2.ViewModels;
 
@@ -29,17 +27,19 @@ public partial class ListagemViewModel(
 
     [ObservableProperty] private int _idOpcoesTemp;
     [ObservableProperty] private Usuario? _usuarioLogado;
-    
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(CallApiCommand))]
+
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(CallApiCommand))]
     private string _cidadeBusca = string.Empty;
 
     [ObservableProperty] private ObservableCollection<Clima> _buscas = new();
-    [ObservableProperty] private DateTime? _startDate;
-    [ObservableProperty] private DateTime? _endDate;
-    
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(ToggleFiltrosButtonText))]
+
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(FiltrarCommand))]
+    private DateTime? _startDate;
+
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(FiltrarCommand))]
+    private DateTime? _endDate;
+
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(ToggleFiltrosButtonText))]
     private bool _filtrosVisiveis = false;
 
     public string ToggleFiltrosButtonText => FiltrosVisiveis ? "Esconder Filtros" : "Mostrar Filtros";
@@ -78,7 +78,9 @@ public partial class ListagemViewModel(
         FiltrosVisiveis = !FiltrosVisiveis;
     }
 
-    [RelayCommand]
+    private bool CanFiltrar() => StartDate.HasValue || EndDate.HasValue;
+
+    [RelayCommand(CanExecute = nameof(CanFiltrar))]
     private void Filtrar()
     {
         var buscasFiltradas = _todasAsBuscas;
@@ -129,7 +131,8 @@ public partial class ListagemViewModel(
     {
         if (UsuarioLogado == null)
         {
-            await _dialogService.DisplayAlert("Erro", "Usuário não encontrado. Por favor, faça o login novamente.", "OK");
+            await _dialogService.DisplayAlert("Erro", "Usuário não encontrado. Por favor, faça o login novamente.",
+                "OK");
             await Shell.Current.GoToAsync("///Login");
         }
     }
