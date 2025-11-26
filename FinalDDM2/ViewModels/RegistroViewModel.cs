@@ -2,43 +2,21 @@
 using CommunityToolkit.Mvvm.Input;
 using FinalDDM2.Models;
 using FinalDDM2.Services;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace FinalDDM2.ViewModels;
 
-public partial class RegistroViewModel(IUsuarioService usuarioService) : ObservableValidator
+public partial class RegistroViewModel(IUsuarioService usuarioService) : ObservableObject
 {
     private readonly IUsuarioService _usuarioService = usuarioService;
 
-    [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [Required(ErrorMessage = "O nome é obrigatório")]
-    [MinLength(3, ErrorMessage = "O nome deve ter no mínimo 3 caracteres")]
-    private string _nome = string.Empty;
+    [ObservableProperty] private string _nome = string.Empty;
+    [ObservableProperty] private string _email = string.Empty;
+    [ObservableProperty] private string _senha = string.Empty;
+    [ObservableProperty] private DateTime _dataNascimento = DateTime.Now;
 
-    [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [Required(ErrorMessage = "O email é obrigatório")]
-    [EmailAddress(ErrorMessage = "O formato do email é inválido")]
-    private string _email = string.Empty;
-
-    [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [Required(ErrorMessage = "A senha é obrigatória")]
-    [MinLength(5, ErrorMessage = "A senha precisa de pelo menos 5 dígitos")]
-    private string _senha = string.Empty;
-
-    [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [Required(ErrorMessage = "A data de nascimento é obrigatória")]
-    private DateTime _dataNascimento = DateTime.Now;
-
-    public ObservableCollection<string> ErrosNome { get; } = new();
-    public ObservableCollection<string> ErrosEmail { get; } = new();
-    public ObservableCollection<string> ErrosSenha { get; } = new();
-    public ObservableCollection<string> ErrosDataNascimento { get; } = new();
+    [ObservableProperty] private string _erroNome = string.Empty;
+    [ObservableProperty] private string _erroEmail = string.Empty;
+    [ObservableProperty] private string _erroSenha = string.Empty;
 
     private Usuario Usuario => new()
     {
@@ -51,26 +29,44 @@ public partial class RegistroViewModel(IUsuarioService usuarioService) : Observa
     [RelayCommand]
     private async Task FazerCadastro()
     {
-        if (!ValidateProperties()) return;
+        if (!Validate()) return;
 
         await _usuarioService.RegistrarUsuario(Usuario);
         await Shell.Current.GoToAsync("///Login");
     }
 
-    private bool ValidateProperties()
+    private bool Validate()
     {
-        ValidateAllProperties();
+        // Clear previous errors
+        ErroNome = string.Empty;
+        ErroEmail = string.Empty;
+        ErroSenha = string.Empty;
 
-        ErrosNome.Clear();
-        ErrosEmail.Clear();
-        ErrosSenha.Clear();
-        ErrosDataNascimento.Clear();
+        // Validate Nome
+        if (string.IsNullOrWhiteSpace(Nome))
+        {
+            ErroNome = "O nome é obrigatório.";
+        }
 
-        GetErrors(nameof(Nome)).Select(e => e.ErrorMessage).ToList<string?>().ForEach(ErrosNome.Add);
-        GetErrors(nameof(Email)).Select(e => e.ErrorMessage).ToList<string?>().ForEach(ErrosEmail.Add);
-        GetErrors(nameof(Senha)).Select(e => e.ErrorMessage).ToList<string?>().ForEach(ErrosSenha.Add);
-        GetErrors(nameof(DataNascimento)).Select(e => e.ErrorMessage).ToList<string?>().ForEach(ErrosDataNascimento.Add);
+        // Validate Email (prioritizing empty check)
+        if (string.IsNullOrWhiteSpace(Email))
+        {
+            ErroEmail = "O email é obrigatório.";
+        }
+        else if (!Email.Contains('@'))
+        {
+            ErroEmail = "O formato do email é inválido (precisa de um '@').";
+        }
 
-        return !HasErrors;
+        // Validate Senha
+        if (string.IsNullOrWhiteSpace(Senha) || Senha.Length <= 5)
+        {
+            ErroSenha = "A senha precisa ter mais de 5 caracteres.";
+        }
+
+        // Return true if no error messages were set
+        return string.IsNullOrEmpty(ErroNome) &&
+               string.IsNullOrEmpty(ErroEmail) &&
+               string.IsNullOrEmpty(ErroSenha);
     }
 }
