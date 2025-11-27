@@ -5,7 +5,7 @@ namespace FinalDDM2.Services;
 
 public interface IClimaService
 {
-    Task AddClima(Clima clima);
-    Task AddClima(JObject clima);
-    Task<Clima> JsonToClima(JObject clima);
+    Task AddClima(Clima? clima);
+    Task AddClima(JObject? jObject);
+    Task<Clima?> JsonToClima(JObject? jObject);
 }

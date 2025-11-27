@@ -49,7 +49,10 @@ public partial class ListagemViewModel(
     [RelayCommand(CanExecute = nameof(CanCallApi))]
     private async Task CallApi()
     {
-        var climaObj = await _climaService.JsonToClima(await _apiService.GetClimaIn(CidadeBusca));
+        var apiResult = await _apiService.GetClimaIn(CidadeBusca);
+        if (apiResult == null) return; // Stop if API call failed
+
+        var climaObj = await _climaService.JsonToClima(apiResult);
         await _climaService.AddClima(climaObj);
         await CarregarDadosUsuario(); // Refresh data
     }
@@ -85,12 +88,12 @@ public partial class ListagemViewModel(
     {
         var buscasFiltradas = _todasAsBuscas;
 
-        if (StartDate.HasValue)
+        if (StartDate != null)
         {
             buscasFiltradas = buscasFiltradas.Where(b => b.DataBusca.Date >= StartDate.Value.Date).ToList();
         }
 
-        if (EndDate.HasValue)
+        if (EndDate != null)
         {
             buscasFiltradas = buscasFiltradas.Where(b => b.DataBusca.Date <= EndDate.Value.Date).ToList();
         }

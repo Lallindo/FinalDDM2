@@ -6,37 +6,38 @@ namespace FinalDDM2.Services;
 
 public class ClimaService(FinalDbContext dbContext, ILoggedUserService loggedUserService) : IClimaService
 {
-    private FinalDbContext DbContext { get; } = dbContext;
-    private ILoggedUserService LoggedUserService { get; } = loggedUserService; 
-    
+    private readonly FinalDbContext _dbContext = dbContext;
+    private readonly ILoggedUserService _loggedUserService = loggedUserService;
+
     public async Task AddClima(Clima clima)
     {
-        await DbContext.Climas.AddAsync(clima);
-        await DbContext.SaveChangesAsync();
+        if (clima == null) return;
+        await _dbContext.Climas.AddAsync(clima);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public async Task AddClima(JObject clima)
+    public async Task AddClima(JObject? jObject)
     {
-        var climaObj = await JsonToClima(clima);
+        if (jObject == null) return;
+
+        var climaObj = await JsonToClima(jObject);
         await AddClima(climaObj);
     }
 
-    public Task<Clima> JsonToClima(JObject clima)
+    public async Task<Clima?> JsonToClima(JObject? jObject)
     {
-        return Task.Run(async () =>
+        if (jObject == null) return null;
+
+        return new Clima
         {
-            return new Clima()
-            {
-                Id = 0,
-                Usuario = await LoggedUserService.GetUsuarioLogado(),
-                TempCelsius = (double)clima["main"]["temp"],
-                SensacaoTermCelsius = (double)clima["main"]["feels_like"],
-                Cidade = (string)clima["name"],
-                DataBusca = DateTime.Now,
-                Longitude = (double)clima["coord"]["lon"],
-                Latitude = (double)clima["coord"]["lat"],
-                CondMetereologicas = (string)clima["weather"][0]["description"]
-            };
-        });
+            Usuario = await _loggedUserService.GetUsuarioLogado(),
+            TempCelsius = (double)jObject["main"]["temp"],
+            SensacaoTermCelsius = (double)jObject["main"]["feels_like"],
+            Cidade = (string)jObject["name"],
+            DataBusca = DateTime.Now,
+            Longitude = (double)jObject["coord"]["lon"],
+            Latitude = (double)jObject["coord"]["lat"],
+            CondMetereologicas = (string)jObject["weather"][0]["description"]
+        };
     }
 }

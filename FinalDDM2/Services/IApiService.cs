@@ -4,5 +4,5 @@ namespace FinalDDM2.Services;
 
 public interface IApiService
 {
-    Task<JObject> GetClimaIn(string cidade);
+    Task<JObject?> GetClimaIn(string cidade);
 }
