@@ -6,13 +6,6 @@ Este é o projeto final para a disciplina de Desenvolvimento para Dispositivos M
 
 O aplicativo consiste em um sistema de cadastro e login de usuários, com uma funcionalidade principal de consulta de previsão do tempo. Ele foi estruturado para ser modular, escalável e de fácil manutenção, seguindo a arquitetura MVVM.
 
-## ✨ Funcionalidades
-
--   [x] **Cadastro de Usuário:** Permite que novos usuários criem uma conta com validação de dados.
--   [x] **Login de Usuário:** Autenticação de usuários existentes.
--   [ ] **Consulta de Clima:** Exibe a previsão do tempo para uma localidade.
--   [x] **Armazenamento Local:** Utiliza SQLite para persistir os dados do usuário no dispositivo.
-
 ## 🛠️ Tecnologias Utilizadas
 
 -   **.NET MAUI:** Framework para criação de aplicativos multiplataforma (Android, iOS, Windows, macOS).
