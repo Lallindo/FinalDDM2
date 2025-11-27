@@ -15,7 +15,6 @@
                 FontAttributes="Bold"
                 HorizontalOptions="Center" />
 
-            <!-- Nome Input -->
             <Border Padding="10" Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 10,10,10,10">
                 <VerticalStackLayout Spacing="5">
                     <Label Text="Nome Completo" />
@@ -24,7 +23,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Email Input -->
             <Border Padding="10" Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 10,10,10,10">
                 <VerticalStackLayout Spacing="5">
                     <Label Text="Email" />
@@ -33,7 +31,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Senha Input -->
             <Border Padding="10" Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 10,10,10,10">
                 <VerticalStackLayout Spacing="5">
                     <Label Text="Senha" />
@@ -42,7 +39,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Data de Nascimento Input (No validation for this field as per request) -->
             <Border Padding="10" Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 10,10,10,10">
                 <VerticalStackLayout Spacing="5">
                     <Label Text="Data de Nascimento" />

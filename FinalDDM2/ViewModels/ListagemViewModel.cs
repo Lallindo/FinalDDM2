@@ -50,11 +50,11 @@ public partial class ListagemViewModel(
     private async Task CallApi()
     {
         var apiResult = await _apiService.GetClimaIn(CidadeBusca);
-        if (apiResult == null) return; // Stop if API call failed
+        if (apiResult == null) return; 
 
         var climaObj = await _climaService.JsonToClima(apiResult);
         await _climaService.AddClima(climaObj);
-        await CarregarDadosUsuario(); // Refresh data
+        await CarregarDadosUsuario(); 
     }
 
     [RelayCommand]

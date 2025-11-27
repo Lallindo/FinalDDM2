@@ -25,12 +25,13 @@ public partial class RegistroViewModel(IUsuarioService usuarioService) : Observa
         Senha = Senha,
         DataNascimento = DataNascimento
     };
+    
 
     [RelayCommand]
     private async Task FazerCadastro()
     {
         if (!Validate()) return;
-
+        
         await _usuarioService.RegistrarUsuario(Usuario);
         await Shell.Current.GoToAsync("///Login");
     }
